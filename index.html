@@ -570,7 +570,62 @@ document.documentElement.className+=" animfolio-js";(function(){function r(){if(
   top: 30px;
 }
 }
-</style>
+/* IMAGE LIGHTBOX */
+#sm-image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background: rgba(5,5,12,.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .3s ease, visibility .3s ease;
+  cursor: zoom-out;
+}
+
+#sm-image-lightbox.sm-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#sm-image-lightbox img {
+  max-width: 94vw;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 14px;
+  box-shadow: 0 0 45px rgba(139,124,255,.30);
+  cursor: default;
+}
+
+#sm-image-lightbox .sm-close {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+  color: white;
+  background: #1e192d;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+@media(max-width:600px) {
+  #sm-image-lightbox img {
+    max-width: 96vw;
+    max-height: 82vh;
+  }
+}</style>
 
 <section id="social-media-carousel">
 
@@ -726,11 +781,59 @@ document.documentElement.className+=" animfolio-js";(function(){function r(){if(
 
   window.addEventListener('resize', () => setActive(active));
 
-  setActive(active);
+  // IMAGE CLICK TO ENLARGE
+const lightbox = document.createElement('div');
+lightbox.id = 'sm-image-lightbox';
+
+const preview = document.createElement('img');
+preview.alt = 'Full size design preview';
+
+const closeButton = document.createElement('button');
+closeButton.className = 'sm-close';
+closeButton.type = 'button';
+closeButton.innerHTML = '&times;';
+closeButton.setAttribute('aria-label', 'Close preview');
+
+lightbox.appendChild(preview);
+lightbox.appendChild(closeButton);
+document.body.appendChild(lightbox);
+
+function openImage(card) {
+  const image = card.querySelector('img');
+  preview.src = image.src;
+  preview.alt = image.alt;
+
+  lightbox.classList.add('sm-open');
+  stop();
+}
+
+function closeImage() {
+  lightbox.classList.remove('sm-open');
+  restart();
+}
+
+cards.forEach(card => {
+  card.style.cursor = 'zoom-in';
+  card.addEventListener('click', () => openImage(card));
+});
+
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeImage();
+});
+preview.addEventListener('click', e => e.stopPropagation());
+closeButton.addEventListener('click', closeImage);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && lightbox.classList.contains('sm-open')) {
+    closeImage();
+  }
+});
+});setActive(active);
   restart();
 })();
 </script>
-<!-- SOCIAL MEDIA SECTION END --></section><section id="stats" class="animfolio-section animfolio-section--stats animfolio-section--align-center" data-animfolio-section="stats"><div class="animfolio-inner"><div class="animfolio-section__header"><h2 class="animfolio-section__title">By the Numbers</h2></div><div class="animfolio-stats animfolio-stagger" data-animfolio-stagger="0.15">
+<!-- SOCIAL MEDIA SECTION END -->
+<section id="stats" class="animfolio-section animfolio-section--stats animfolio-section--align-center" data-animfolio-section="stats"><div class="animfolio-inner"><div class="animfolio-section__header"><h2 class="animfolio-section__title">By the Numbers</h2></div><div class="animfolio-stats animfolio-stagger" data-animfolio-stagger="0.15">
 					<div class="animfolio-stat animfolio-card animfolio-card--bordered animfolio-stagger__item">
 			<span class="animfolio-stat__number" data-animfolio-counter="4" data-animfolio-decimals="0" data-animfolio-suffix="+" data-animfolio-prefix="">4+</span>
 			<span class="animfolio-stat__label">Years of Experience</span>
