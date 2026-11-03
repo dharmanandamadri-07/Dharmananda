@@ -734,11 +734,13 @@ document.documentElement.className+=" animfolio-js";(function(){function r(){if(
   }
 
   function stop() {
-    clearInterval(timer);
+    if (timer) clearInterval(timer);
+    timer = null;
   }
 
   function restart() {
     stop();
+    if (lightbox && lightbox.classList.contains('sm-open')) return;
     timer = setInterval(next, 3200);
   }
 
@@ -784,6 +786,10 @@ document.documentElement.className+=" animfolio-js";(function(){function r(){if(
   // IMAGE CLICK TO ENLARGE
 const lightbox = document.createElement('div');
 lightbox.id = 'sm-image-lightbox';
+lightbox.setAttribute('role', 'dialog');
+lightbox.setAttribute('aria-modal', 'true');
+lightbox.setAttribute('aria-hidden', 'true');
+lightbox.setAttribute('aria-label', 'Full-size design preview');
 
 const preview = document.createElement('img');
 preview.alt = 'Full size design preview';
@@ -798,18 +804,36 @@ lightbox.appendChild(preview);
 lightbox.appendChild(closeButton);
 document.body.appendChild(lightbox);
 
+let previousBodyOverflow = '';
+let previouslyFocusedElement = null;
+
 function openImage(card) {
   const image = card.querySelector('img');
-  preview.src = image.src;
-  preview.alt = image.alt;
+  if (!image) return;
+
+  preview.src = image.currentSrc || image.src;
+  preview.alt = image.alt || 'Full-size design preview';
+  previouslyFocusedElement = document.activeElement;
+  previousBodyOverflow = document.body.style.overflow;
 
   lightbox.classList.add('sm-open');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
   stop();
+  closeButton.focus();
 }
 
 function closeImage() {
+  if (!lightbox.classList.contains('sm-open')) return;
+
   lightbox.classList.remove('sm-open');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = previousBodyOverflow;
   restart();
+
+  if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+    previouslyFocusedElement.focus();
+  }
 }
 
 cards.forEach(card => {
@@ -828,8 +852,9 @@ document.addEventListener('keydown', e => {
     closeImage();
   }
 });
-});setActive(active);
-  restart();
+
+setActive(active);
+restart();
 })();
 </script>
 <!-- SOCIAL MEDIA SECTION END -->
@@ -950,7 +975,6 @@ document.addEventListener('keydown', e => {
 </div>
 </div><!-- .animfolio-inner --></section><button class="animfolio-back-to-top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button><div class="animfolio-progress"><div class="animfolio-progress__bar"></div></div><div class="animfolio-footer-social animfolio-social-icons animfolio-social-icons--outline"><a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="animfolio-social__label">Github</span></a><a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Linkedin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span class="animfolio-social__label">Linkedin</span></a><a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg><span class="animfolio-social__label">Twitter</span></a><a href="https://dribbble.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Dribbble"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"></path></svg><span class="animfolio-social__label">Dribbble</span></a><a href="mailto:hello@yourdomain.com" target="_blank" rel="noopener noreferrer" aria-label="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span class="animfolio-social__label">Email</span></a></div></div>
 
-<div aria-label="Color scheme preview (demo only)" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;display:flex;align-items:center;gap:4px;padding:6px;border-radius:999px;background:rgba(18,18,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 30px rgba(0,0,0,.4)"><span style="padding:0 6px 0 10px;font:700 11px/1 -apple-system,sans-serif;letter-spacing:.4px;text-transform:uppercase;color:#8b90a0">Colors</span><a href="index.html" aria-current="true" title="Default Purple" style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;text-decoration:none;font:600 12px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);transition:.15s"><span style="width:12px;height:12px;border-radius:50%;background:#7F77DD;box-shadow:0 0 0 1px rgba(255,255,255,.25)"></span>Purple</a><a href="v2.html" title="GitHub Green" style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;text-decoration:none;font:600 12px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#c9cdd6;background:transparent;border:1px solid transparent;transition:.15s"><span style="width:12px;height:12px;border-radius:50%;background:#238636;box-shadow:0 0 0 1px rgba(255,255,255,.25)"></span>GitHub Green</a><a href="v3.html" title="VS Code Blue" style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;text-decoration:none;font:600 12px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#c9cdd6;background:transparent;border:1px solid transparent;transition:.15s"><span style="width:12px;height:12px;border-radius:50%;background:#007ACC;box-shadow:0 0 0 1px rgba(255,255,255,.25)"></span>VS Code Blue</a></div>
 
 <script>
 var animfolioSettings = {"animationIntensity":"medium","respectReducedMotion":"1","colorScheme":"dark","smoothScroll":"1","scrollBehavior":"smooth","customCursor":"","backToTop":"1","progressBar":"1","darkModeToggle":"1","debugMode":""};
