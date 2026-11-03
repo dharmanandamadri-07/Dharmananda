@@ -1,73 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>
-/* HERO TWO-COLUMN LAYOUT */
-#hero .animfolio-hero {
-  display: grid !important;
-  grid-template-columns: 1.15fr .85fr;
-  align-items: center;
-  gap: 55px;
-}
-
-#hero .animfolio-hero__content {
-  text-align: left !important;
-  width: 100%;
-}
-
-#hero .animfolio-hero__cta,
-#hero .animfolio-hero__social {
-  justify-content: flex-start;
-}
-
-#hero .animfolio-hero__portrait {
-  position: relative;
-  width: 100%;
-  max-width: 430px;
-  height: 500px;
-  justify-self: center;
-  padding: 5px;
-  border: 2px solid #a56aff;
-  border-radius: 38px;
-  background: #11101c;
-  box-shadow:
-    0 0 15px rgba(165,106,255,.8),
-    0 0 45px rgba(139,92,246,.4);
-  overflow: hidden;
-}
-
-#hero .animfolio-hero__portrait img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-  object-position: center bottom;
-  border-radius: 30px;
-}
-
-/* TABLET AND MOBILE */
-@media(max-width:900px) {
-  #hero .animfolio-hero {
-    grid-template-columns: 1fr;
-    gap: 35px;
-  }
-
-  #hero .animfolio-hero__content {
-    text-align: center !important;
-  }
-
-  #hero .animfolio-hero__cta,
-  #hero .animfolio-hero__social {
-    justify-content: center;
-  }
-
-  #hero .animfolio-hero__portrait {
-    max-width: 360px;
-    height: 420px;
-  }
-}
-</style>
-	<head>
 <meta name="google-site-verification" content="kOKgH3NzcfhL7rZ7D2yBOjZuYOocExbK8ZyNMk6g5pc" />	
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -210,19 +143,222 @@
 document.documentElement.className+=" animfolio-js";(function(){function r(){if(window.animfolio&&window.animfolio._initialized){return;}var e=document.querySelectorAll("[data-animfolio-animate]:not(.animfolio-visible),.animfolio-stagger__item:not(.animfolio-visible)");for(var i=0;i<e.length;i++){e[i].classList.add("animfolio-visible");}}if(document.readyState==="complete"){setTimeout(r,1500);}else{window.addEventListener("load",function(){setTimeout(r,1500);});}setTimeout(r,4000);})();
 //# sourceURL=animfolio-failsafe-js-after
 </script>
-<div class="animfolio-hero__portrait"
-     data-animfolio-animate="fade-up"
-     data-animfolio-delay="0.3">
 
-  <img
-    src="./assets/images/portfolio%20image.png"
-    alt="Dharmananda Madri - Presentation Specialist and Visual Designer"
-    width="600"
-    height="750"
-    loading="eager"
-    decoding="async">
-</div>
-	</head>
+<style id="dharmananda-hero-layout">
+/* Premium two-column hero: existing text on the left, portrait on the right */
+#hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 78px);
+  min-height: calc(100svh - 78px);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 78% 52%, rgba(103, 42, 176, .28), transparent 34%),
+    radial-gradient(ellipse at 12% 100%, rgba(87, 42, 160, .22), transparent 42%),
+    linear-gradient(115deg, #080810 0%, #100c1d 58%, #090811 100%) !important;
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: min(74vw, 1120px);
+  aspect-ratio: 1;
+  right: -29%;
+  bottom: -83%;
+  border: 1px solid rgba(148, 75, 255, .28);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 34px rgba(112, 51, 195, .045),
+    0 0 0 72px rgba(112, 51, 195, .035);
+  pointer-events: none;
+}
+
+#hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 680px;
+  height: 680px;
+  right: 2%;
+  top: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(111, 44, 190, .19), rgba(111, 44, 190, 0) 68%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+#hero .animfolio-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1660px !important;
+  margin: 0 auto;
+  padding: clamp(54px, 6vw, 96px) clamp(26px, 5.3vw, 96px) !important;
+}
+
+#hero .animfolio-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.12fr) minmax(360px, .88fr);
+  align-items: center;
+  gap: clamp(40px, 5vw, 88px);
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+}
+
+#hero .animfolio-hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 900px;
+  min-width: 0;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+#hero .animfolio-hero__name,
+#hero .animfolio-hero__title,
+#hero .animfolio-hero__subtitle {
+  text-align: left !important;
+}
+
+#hero .animfolio-hero__cta,
+#hero .animfolio-hero__social {
+  display: flex;
+  justify-content: flex-start !important;
+  align-items: center;
+}
+
+#hero .animfolio-hero__portrait {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 570px);
+  height: clamp(460px, 43vw, 640px);
+  min-height: 440px;
+  justify-self: end;
+  margin: 0;
+  padding: 0;
+  border: 3px solid rgba(190, 139, 255, .98);
+  border-radius: 46px;
+  background: #100c1d;
+  box-shadow:
+    0 0 14px rgba(184, 119, 255, .95),
+    0 0 38px rgba(145, 68, 255, .55),
+    0 0 92px rgba(116, 47, 210, .30),
+    inset 0 0 20px rgba(177, 119, 255, .12);
+  overflow: visible;
+  isolation: isolate;
+}
+
+#hero .animfolio-hero__portrait::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -17px;
+  border: 1px solid rgba(170, 104, 255, .48);
+  border-radius: 60px;
+  box-shadow: 0 0 55px rgba(135, 62, 245, .24);
+  pointer-events: none;
+}
+
+#hero .animfolio-hero__portrait::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: -90px -120px -120px -110px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(121, 55, 208, .42), rgba(121, 55, 208, 0) 67%);
+  filter: blur(16px);
+  pointer-events: none;
+}
+
+#hero .animfolio-hero__portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 42px;
+  background: #100c1d;
+}
+
+/* Tablet and mobile: keep all existing text, then place the portrait below it */
+@media (max-width: 980px) {
+  #hero {
+    min-height: auto;
+  }
+
+  #hero .animfolio-inner {
+    padding: 72px 28px 82px !important;
+  }
+
+  #hero .animfolio-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  #hero .animfolio-hero__content {
+    max-width: 820px;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+
+  #hero .animfolio-hero__name,
+  #hero .animfolio-hero__title,
+  #hero .animfolio-hero__subtitle {
+    text-align: center !important;
+  }
+
+  #hero .animfolio-hero__cta,
+  #hero .animfolio-hero__social {
+    justify-content: center !important;
+  }
+
+  #hero .animfolio-hero__portrait {
+    justify-self: center;
+    width: min(100%, 470px);
+    height: clamp(420px, 76vw, 560px);
+  }
+}
+
+@media (max-width: 560px) {
+  #hero .animfolio-inner {
+    padding: 54px 20px 68px !important;
+  }
+
+  #hero .animfolio-hero {
+    gap: 38px;
+  }
+
+  #hero .animfolio-hero__portrait {
+    width: min(100%, 390px);
+    height: 440px;
+    min-height: 0;
+    border-radius: 34px;
+  }
+
+  #hero .animfolio-hero__portrait img {
+    border-radius: 30px;
+  }
+
+  #hero .animfolio-hero__portrait::before {
+    inset: -10px;
+    border-radius: 43px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero .animfolio-hero__portrait,
+  #hero .animfolio-hero__portrait::before {
+    transition: none !important;
+  }
+}
+</style>
+
+</head>
 <body>
 <!-- ============================================================
      CONFIG — set your email for the contact form (FormSubmit.co).
@@ -277,6 +413,18 @@ document.documentElement.className+=" animfolio-js";(function(){function r(){if(
 							</div>
 		
 			</div>
+
+    <div class="animfolio-hero__portrait"
+         data-animfolio-animate="fade-up"
+         data-animfolio-delay="0.3">
+      <img
+        src="./assets/images/portfolio%20image.png"
+        alt="Dharmananda Madri - Presentation Specialist and Visual Designer"
+        width="600"
+        height="750"
+        loading="eager"
+        decoding="async">
+    </div>
 </div>
 </div><!-- .animfolio-inner --></section><section id="about" class="animfolio-section animfolio-section--about animfolio-section--align-center" data-animfolio-section="about"><div class="animfolio-inner"><div class="animfolio-section__header"><h2 class="animfolio-section__title">About Me</h2></div><div class="animfolio-about" data-animfolio-animate="fade-up">
 				<div class="animfolio-about__bio">I'm a Presentation Specialist and Visual Designer with 4+ years of experience transforming complex ideas into clear, engaging, and visually compelling presentations. I specialize in PowerPoint presentations, investor pitch decks, business presentations, and visual storytelling. I combine strategic thinking, clean design, and strong visual hierarchy to help brands and businesses communicate their ideas with impact.</div>
@@ -1052,30 +1200,6 @@ restart();
 		<div class="animfolio-contact__qr-wrapper"><div class="animfolio-qr" data-animfolio-qr="" data-animfolio-vcard="QkVHSU46VkNBUkQNClZFUlNJT046My4wDQpGTjpEYW5pZWwgTWVyY2VyDQpOOk1lcmNlcjtEYW5pZWw7OzsNClRJVExFOlNlbmlvciBGdWxsLVN0YWNrIEVuZ2luZWVyDQpFTUFJTDtUWVBFPVdPUks6eW91QGV4YW1wbGUuY29tDQpVUkw6aHR0cHM6Ly95b3VyLXdlYnNpdGUuZXhhbXBsZQ0KTk9URTpJJ20gYSBmdWxsLXN0YWNrIGRldmVsb3BlciB3aXRoIDgrIHllYXJzIG9mIGV4cGVyaWVuY2UgYnVpbGRpbmcgd2ViIGFwcGxpY2F0aW9ucyB0aGF0IHNvbHZlIHJlYWwgcHJvYmxlbXMuIEknbSBwYXNzaW9uYXRlIGFib3V0IGNsZWFuIGFyY2hpdGVjdHVyZVwsIGRldmVsb3BlciBleHBlcmllbmNlXCwgYW5kIG9wZW4gc291cmNlLiBXaGVuIEknbSBub3RcbkdpdGh1YjogaHR0cHM6Ly9naXRodWIuY29tL3lvdXJ1c2VybmFtZVxuTGlua2VkaW46IGh0dHBzOi8vbGlua2VkaW4uY29tL2luL3lvdXJ1c2VybmFtZVxuVHdpdHRlcjogaHR0cHM6Ly90d2l0dGVyLmNvbS95b3VydXNlcm5hbWVcbkRyaWJiYmxlOiBodHRwczovL2RyaWJiYmxlLmNvbS95b3VydXNlcm5hbWUNClgtU09DSUFMUFJPRklMRTtUWVBFPWdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20veW91cnVzZXJuYW1lDQpYLVNPQ0lBTFBST0ZJTEU7VFlQRT1saW5rZWRpbjpodHRwczovL2xpbmtlZGluLmNvbS9pbi95b3VydXNlcm5hbWUNClgtU09DSUFMUFJPRklMRTtUWVBFPXR3aXR0ZXI6aHR0cHM6Ly90d2l0dGVyLmNvbS95b3VydXNlcm5hbWUNClgtU09DSUFMUFJPRklMRTtUWVBFPWRyaWJiYmxlOmh0dHBzOi8vZHJpYmJibGUuY29tL3lvdXJ1c2VybmFtZQ0KUkVWOjIwMjYtMDctMTJUMTM6MjI6NDFaDQpFTkQ6VkNBUkQNCg=="><div class="animfolio-qr__code" style="width:200px;height:200px"></div><p class="animfolio-qr__caption">Scan to save my contact</p><a href="./assets/contact.vcf" class="animfolio-qr__download animfolio-button animfolio-button--secondary" download="">Download vCard</a></div></div>	</div>
 
 </div>
-      </div><!-- Social icons close -->
-
-    </div><!-- Hero content close -->
-
-
-    <!-- PROFILE PORTRAIT START -->
-    <div class="animfolio-hero__portrait"
-         data-animfolio-animate="fade-up"
-         data-animfolio-delay="0.3">
-
-      <img
-        src="./assets/images/portfolio%20image.png"
-        alt="Dharmananda Madri - Presentation Specialist and Visual Designer"
-        width="600"
-        height="750"
-        loading="eager"
-        decoding="async">
-
-    </div>
-    <!-- PROFILE PORTRAIT END -->
-
-
-  </div><!-- Hero row close -->
-
 
 <script>
 var animfolioSettings = {"animationIntensity":"medium","respectReducedMotion":"1","colorScheme":"dark","smoothScroll":"1","scrollBehavior":"smooth","customCursor":"","backToTop":"1","progressBar":"1","darkModeToggle":"1","debugMode":""};
